@@ -1,0 +1,156 @@
+<?php
+
+/*
+ * Implements hook_schema().
+ */
+function transfer_request_schema() {
+  $schema = array();
+  $schema['transfer_request_updated'] = array(
+    'description' => t('User submissions for Material Transfer Requests'),
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'size' => 'normal',
+        'not null' => TRUE,
+        'description' => t("Primary ID for table."),
+      ),
+      'transfer_num' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => t("Transfer Number and also primary."),
+        'default' => 0,
+      ),
+      'approved' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => FALSE,
+        'default' => 'FALSE',
+        'description' => t("Approval of Transfer Request."),
+      ),
+      'submitted_by' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Submitted By.'),
+      ),
+      'date_submitted' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'default' => '',
+        'not null' => TRUE,
+        'description' => t("Time and Date of form submission."),
+      ),
+      'transfer_items' => array(
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'description' => t('Items being transferred.(Unit ID, NID, From Rig, From Location)'),
+      ),
+      'operator' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Operator/Company.'),
+      ),
+      'to_rig' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'to_location' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Destination Location.'),
+      ),
+      'transport_company' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => t('Transport Company.'),
+      ),
+      'driver_name' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => t('Drivers name.'),
+      ),
+      'receiver' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t("Receivers name."),
+      ),
+      'phone_num' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => t('Phone number.'),
+      ),
+      'email' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => t('Email.'),
+      ),
+      'shipping_directions' => array(
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'description' => t('Shipping Directions.'),
+      ),
+      'shipping_notes' => array(
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'description' => t('Shipping Notes.'),
+      ),
+      'administrator' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Administrator who approved transfer request.'),
+      ),
+      'admin_notes' => array(
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'description' => t('Administrators Notes.'),
+      ),
+      'third_party_rental' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'description' => t("Applicable third party charges."),
+      ),
+      'timestamp' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Time the order was created.')
+      ),
+    ),
+    'primary key' => array('id', 'transfer_num'),
+  );
+  return $schema;
+}
+
+/*
+ * Implements hook_update_N().
+ */
+function transfer_request_update_7000() {
+  drupal_install_schema('transfer_request_updated');
+}

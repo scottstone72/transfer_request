@@ -1,0 +1,398 @@
+<?php
+
+/**
+ *	Implements hook_help().
+ */
+function transfer_request_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#transfer_request': {
+      $ret_val = '<p>' . t('This form is for submitting a material
+			  transfer request for administrator approval.') . '</p>';
+      return $ret_val;
+    }
+  }
+}
+
+/**
+ *	Implements hook_permission().
+ */
+function transfer_request_permission() {
+  return array(
+    'view transfer request form and archive' => array(
+      'title' => t('Access the Form and Archived pages'),
+      'description' => t('Access the Form and Archived pages.'),
+      'restrict access' => TRUE,
+    ),
+    'view transfer approvals' => array(
+      'title' => t('Access the Approvals page'),
+      'description' => t('Access the Approvals page.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function transfer_request_menu() {
+  $items = array();
+
+// Transfer Request Form page.
+  $items['transfer_request'] = array(
+    'title' => 'Transfer Request Form',
+    'description' => t('Form for transfer of rental equipment.'),
+    'page callback' => 'transfer_request_form_page',
+    'access arguments' => array('view transfer request form and archive'),
+    'file' => 'transfer_request.inc',
+  );
+// Add Confirmation page for print friendly version
+// and sending admin email after new transfer request.
+  $items['transfer_request/print'] = array(
+    'title' => '',
+    'description' => t('Printer friendly transfer request form submission data.'),
+    'page callback' => 'transfer_confirmation_page',
+    'access arguments' => array('view transfer request form and archive'),
+    'file' => 'transfer_request.print.inc',
+    'type' => MENU_CALLBACK,
+  );
+  //  Add menu item for Approvals page
+  $items['transfer_request_approval'] = array(
+    'title' => 'Transfer Requests Approvals',
+    'description' => t('Transfer requests awaiting approval.'),
+    'page callback' => 'transfer_request_approval_page',
+    'access arguments' => array('view transfer approvals'),
+    'file' => 'transfer_approval.inc',
+  );
+// This is the Approval confirmation page and is a printer friendly page after submitting.
+  $items['transfer_request_approval/print'] = array(
+    //'title' => 'Popup Form Page',
+    'description' => t('Printer friendly transfer request form submission data.'),
+    'page callback' => 'transfer_request_approval_print',
+    'access arguments' => array('view transfer approvals'),
+    'file' => 'transfer_approval.print.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+// This page is an Archive of transfer request submissions.
+  $items['transfer_request_archive'] = array(
+    'title' => 'Transfer Archive List',
+    'description' => t('Archive table for complete list of all Transfer Requests.'),
+    'page callback' => 'transfer_request_archive_page',
+    'access arguments' => array('view transfer request form and archive'),
+    'file' => 'transfer.archive.inc',
+  );
+// This page is for printing from the Archive page.
+  $items['transfer_request_archive/print/%'] = array(
+    'title' => '',
+    'description' => t('Printer friendly transfer request form submission data.'),
+    'page callback' => 'transfer_archive_page_print',
+    'page arguments' => array(2),
+    'access arguments' => array('view transfer request form and archive'),
+    'file' => 'transfer_archive.print.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+
+
+//  // Admin configuration group.
+//   $items['admin/config/transfer_request_form'] = array(
+//      'title' => 'Transfer Request',
+//      'description' => t('Form for transfer of rental equipment.'),
+//      'access arguments' => array('View Transfer Request Approvals'),
+//  );
+//
+//   // Admin configuration - Settings.
+//  $items['admin/config/transfer_request_form/settings'] = array(
+//      'title' => 'Form Settings',
+//      'description' => t('Manage Transfer Request Form configuration settings.'),
+//      'access arguments' => array('view transfer approvals and submissions'),
+//      'page callback' => 'drupal_get_form',
+//      'page arguments' => array('transfer_admin_settings_form'),
+//  );
+
+  // This is for transferring  data form old table to new table
+//  $items['transfer_request_data'] = array(
+//    'title' => 'Transfer Request Data',
+//    'description' => t('Update the new transfer request table.'),
+//    'page callback' => 'drupal_get_form',
+//    'page arguments' => array('transfer_request_move_data_form'),
+//    'access arguments' => array('view transfer request form'),
+//  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_mail()
+ * Using to send email from transfer request submissions to administrator
+ * @param $key
+ * @param $message
+ * @param $params
+ *
+ */
+function transfer_request_mail($key, &$message, $params) {
+  $language = $message['language'];
+  switch ($key) {
+    case 'new_transfer':
+      $vars = array();
+      $transfer_num = $params['transfer_num'];
+      $date = $params['date'];
+      $notes = $params['notes'];
+
+      $message['subject'] = t('New Transfer Request', $vars, array($language->language));
+      $message['body'][] = "A new Transfer Request Transfer# $transfer_num has been submitted on $date, please click the following link below to view request. \n\n" .  "Notes \n" . "$notes \n" .
+        l('Login ','http://ponderosarentals.com/transfer_request_approval');
+      break;
+
+    case 'third_party':
+      $vars = array();
+      $transfer_num = $params['transfer_num'];
+      $date = $params['date'];
+      $notes = $params['notes'];
+
+      $message['subject'] = t('New Transfer Request', $vars, array($language->language));
+      $message['body'][] = "A new Transfer Request# $transfer_num with applicable third party charges has been submitted on $date, please click the following link to view the request. \n\n" .  "Notes \n" . "$notes \n" .
+        l('Login ','http://ponderosarentals.com/transfer_request_approval');
+      break;
+  }
+}
+
+
+///**
+// * Implements hook_form().
+// *
+// * This is the admin configuration page where the email's are set.
+// */
+//function transfer_admin_settings_form($form, &$form_state) {
+//
+//  $form = array();
+//  // Getting saved email addresses if they exist yet
+//  $admin_email_value = variable_get('transfer_admin_email', '');
+//  $party_email_value = variable_get('transfer_party_email', '');
+//
+//    $form['overview'] = array(
+//      '#type' => 'markup',
+//      '#markup' => t('This configuration settings page is for setting the
+//        values for the users who require emails sent as notification that a
+//        transfer request has been submitted and whether third-party rental equipment is needed.'),
+//      '#prefix' => '<p>',
+//      '#suffix' => '</p>',
+//    );
+//
+//    $form['admin_email'] = array(
+//      '#type' => 'textfield',
+//      '#title' => 'Administrators Email',
+//      '#description' => 'This email is sent to the administrator to be notified when a New Transfer Request has been submitted.
+//        Add another email by seperating emails with a comma "," with no spaces in between email addresses.',
+//      '#default_value' => $admin_email_value,
+//    );
+//
+//    $form['third_party'] = array(
+//      '#type' => 'textfield',
+//      '#title' => 'Third Party Email',
+//      '#description' => 'This email is sent to who it may concern when Applicable Third Party charges are required.
+//        Add another email by seperating emails with a comma "," with no spaces in between email addresses.',
+//      '#default_value' => $party_email_value,
+//    );
+//
+//    $form['submit_button'] = array(
+//      '#type' => 'submit',
+//      '#value' => 'Save',
+//    );
+//
+//  return $form;
+//}
+//
+///**
+// *  Implements hook_form_validate()
+// * @param $form
+// * @param $form_state
+// */
+//function transfer_admin_settings_form_validate($form, &$form_state) {
+//
+////  // If admin emails are supplied then validate it
+//  if(!empty($form_state['values']['admin_email'])) {
+//
+//    $admin_emails = explode(',', $form_state['values']['admin_email']);
+//    foreach($admin_emails as $email) {
+//      $admin_email_value = check_plain($email);
+//      // Pass result to $answer variable
+//      $answer_admin = valid_email_address($admin_email_value);
+//
+//      if($answer_admin == FALSE) {
+//        form_set_error('[admin_email',
+//          t('Please enter a proper email address!'));
+//      }
+//    }
+//  }
+//  // If CC is supplied then validate it
+////  if(!empty($form_state['values']['cc'])) {
+////    $cc = check_plain($form_state['values']['cc']);
+////    // Pass result to $answer variable
+////    $answer_cc = valid_email_address($cc);
+////
+////    if($answer_cc == FALSE) {
+////      form_set_error('[cc',
+////        t('Please enter a proper email address!'));
+////    }
+////  }
+//
+//  // If third party emails are supplied then validate it
+//  if(!empty($form_state['values']['third_party'])) {
+//
+//    $transfer_emails = explode(',', $form_state['values']['third_party']);
+//    foreach($transfer_emails as $email) {
+//      $transfer_email_value = check_plain($email);
+//      // Pass result to $answer variable
+//      $answer_transfer = valid_email_address($transfer_email_value);
+//
+//      if($answer_transfer == FALSE) {
+//        form_set_error('[third_party',
+//          t('Please enter a proper email address!'));
+//      }
+//    }
+//  }
+//
+//}
+//
+///**
+// * Implements hook_form_submit().
+// */
+//function transfer_admin_settings_form_submit($form, &$form_state) {
+//
+//  variable_del('transfer_admin_email');
+//  variable_del('transfer_party_email');
+//
+//  variable_set('transfer_admin_email', $form_state['values']['admin_email']);
+//  variable_set('transfer_party_email', $form_state['values']['third_party']);
+//
+//  drupal_set_message(t('Thank You! Your email settings have been saved.'));
+//
+//}
+
+/**
+ * Adding multiple forms to the page.
+ * This form is called when drupal_retrieve_form() can't find a matching $form_id.
+ * This file has to be in the .module file to work properly.
+ */
+function transfer_request_forms($form_id, $args) {
+  $forms = array();
+
+  if (substr($form_id, 0,31) == 'transfer_request_approval_form_' ) {
+    $forms[$form_id] = array('callback' => 'transfer_request_approval_form');
+  }
+
+  if (substr($form_id, 0,30) == 'transfer_request_archive_form_' ) {
+    $forms[$form_id] = array('callback' => 'transfer_request_archive_form');
+  }
+
+  return $forms;
+}
+
+
+///**
+// * This form is for reformatting and transferring data from the old
+// * Transfer Request table to the new Transfer Request Updated table .
+// */
+//
+//function transfer_request_move_data_form($form, &$form_state) {
+//
+//  $form = array();
+//  $data_arr = array();
+//
+//  $results = db_select('transfer_request', 't')
+//    ->fields('t')
+////    ->condition('transfer_num', 1, '=')
+//    ->execute();
+//
+//  foreach($results as $val) {
+//
+//    $data_arr[$val->transfer_num]['transfer_num'] = $val->transfer_num;
+//    $data_arr[$val->transfer_num]['approved'] = $val->approved;
+//    $data_arr[$val->transfer_num]['submitted_by'] = $val->submitted_by;
+//    $data_arr[$val->transfer_num]['date_submitted'] = $val->date_submitted;
+//    $data_arr[$val->transfer_num]['to_rig'] = $val->to_rig;
+//    $data_arr[$val->transfer_num]['to_location'] = $val->to_location;
+//    $data_arr[$val->transfer_num]['operator'] = $val->operator;
+//    $data_arr[$val->transfer_num]['transport_company'] = $val->transport_company;
+//    $data_arr[$val->transfer_num]['driver_name'] = $val->driver_name;
+//    $data_arr[$val->transfer_num]['receiver'] = $val->receiver;
+//    $data_arr[$val->transfer_num]['phone_num'] = $val->phone_num;
+//    $data_arr[$val->transfer_num]['email'] = $val->email;
+//    $data_arr[$val->transfer_num]['shipping_directions'] = $val->shipping_directions;
+//    $data_arr[$val->transfer_num]['shipping_notes'] = $val->shipping_notes;
+//    $data_arr[$val->transfer_num]['administrator'] = $val->administrator;
+//    $data_arr[$val->transfer_num]['admin_notes'] = $val->admin_notes;
+//    $data_arr[$val->transfer_num]['third_party_rental'] = $val->third_party_rental;
+//    $data_arr[$val->transfer_num]['timestamp'] = 0;
+//
+//    // Sort our Transfer Items
+//    $data_arr[$val->transfer_num]['transfer_items'][] = array(
+//      'nid' => $val->nid,
+//      'unit_id' => $val->unit_id,
+//      'from_field' => $val->from_rig,
+//      'from_lsd' => $val->from_location,
+//    );
+//
+//  }
+//
+//  foreach ($data_arr as $key => $value) {
+//
+//    $data_arr[$key]['transfer_items'] = array(serialize($value['transfer_items']));
+//
+//  }
+//
+//
+//  $form['transfer_data'] = array(
+//    '#type' => 'value',
+//    '#value' => $data_arr,
+//  );
+//
+//  $form['submit_button'] = array(
+//    '#type' => 'submit',
+//    '#value' => 'Transfer Data',
+//  );
+//
+//  return $form;
+//}
+//
+//
+///**
+// * Validate the data
+// */
+//function transfer_request_move_data_form_submit($form, &$form_state) {
+//
+//
+//  $query = db_insert('transfer_request_updated')
+//    ->fields(array(
+//      'transfer_num',
+//      'approved',
+//      'submitted_by',
+//      'date_submitted',
+//      'transfer_items',
+//      'operator',
+//      'to_rig',
+//      'to_location',
+//      'transport_company',
+//      'driver_name',
+//      'receiver',
+//      'phone_num',
+//      'email',
+//      'shipping_directions',
+//      'shipping_notes',
+//      'administrator',
+//      'admin_notes',
+//      'third_party_rental',
+//      'timestamp',
+//    ));
+//
+//  // Submit the query
+//  foreach ($form_state['values']['transfer_data'] as $row) {
+//    $query->values($row);
+//  }
+//
+//  $query->execute();
+//
+//
+//}

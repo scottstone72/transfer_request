@@ -1,0 +1,23 @@
+name = Transfer Request
+description = Material Transfer Request Form for admin.
+core = 7.x
+version = 7.x - v2.0
+package = Ponderosa Rentals Modules
+
+; These are files that are to be included
+files[] = transfer_request.inc
+files[] = transfer_request.print.inc
+files[] = transfer_approval.inc
+files[] = transfer_approval.print.inc
+files[] = transfer.archive.inc
+files[] = transfer_archive.print.inc
+files[] = transfer_request.install
+files[] = includes/class.transfer_request.inc.php
+
+dependencies[] = pr_operation_settings
+
+
+
+
+
+
