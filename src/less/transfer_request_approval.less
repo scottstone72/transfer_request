@@ -1,0 +1,133 @@
+@import 'bootstrap.less';
+@import 'variables.less';
+
+span.form-required, span.asterick {
+  color: #c7254e !important;
+}
+
+
+form {
+
+  fieldset.approval-fieldset.panel.panel-default {
+    border: 3px solid #ffffff;
+  }
+
+  table tr td:first-child, thead tr th:first-child {
+    display: none;
+  }
+
+  .table {
+    margin-bottom: 5px;
+  }
+
+  fieldset {
+    padding-bottom: 0;
+    .panel-body {
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+  }
+
+  .show-details, .cancel-btn-val {
+    color: #d36a00;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+      color: darken(#d36a00, 5%);
+    }
+  }
+
+  .transfer-num,
+  .date-submitted,
+  .submitted-by {
+    .make-sm-column(4);
+    .make-md-column(4);
+    .make-lg-column(4);
+  }
+
+  .receiver,
+  .phone-num,
+  .email,
+  .trans-company,
+  .driver-name {
+    .make-sm-column(4);
+    .make-md-column(4);
+    .make-lg-column(4);
+  }
+
+  .ship-directions,
+  .ship-notes {
+    .make-sm-column(6);
+    .make-md-column(6);
+    .make-lg-column(6);
+  }
+
+
+  .from-rig,
+  .from-lsd {
+    .make-sm-column(4);
+    .make-md-column(4);
+    .make-lg-column(4);
+  }
+
+  .unit-id,
+  .unit-id-select {
+    .make-sm-column(3);
+    .make-md-column(3);
+    .make-lg-column(3);
+  }
+
+  .transfer-items-num {
+    .make-sm-column(1);
+    .make-md-column(1);
+    .make-lg-column(1);
+  }
+
+  .to-rig,
+  .to-lsd,
+  .operator {
+    .make-sm-column(4);
+    .make-md-column(4);
+    .make-lg-column(4);
+  }
+
+  .admin-notes {
+    .make-sm-column(8);
+    .make-md-column(8);
+    .make-lg-column(8);
+  }
+
+  .admin-approver {
+    .make-sm-column(4);
+    .make-md-column(4);
+    .make-lg-column(4);
+  }
+
+
+  #third-party {
+    .make-sm-column(12);
+    .make-md-column(12);
+    .make-lg-column(12);
+    margin-bottom: 30px;
+
+    #third-party-checkbox {
+      margin-top: 8px;
+      margin-left: -20px;
+    }
+  }
+
+  .submit-button {
+    padding-bottom: 30px;
+    .make-sm-column(12);
+    .make-md-column(12);
+    .make-lg-column(12);
+  }
+
+
+  .cancel-button {
+    .make-sm-column(12);
+    .make-md-column(12);
+    .make-lg-column(12);
+  }
+
+}

@@ -6395,6 +6395,7 @@ div#required-container span.asterick {
 }
 #third-party #third-party-checkbox {
   margin-top: 8px;
+  margin-left: -20px;
 }
 #submit-button {
   margin-bottom: 30px;
@@ -6420,4 +6421,11 @@ div#required-container span.asterick {
     float: left;
     width: 100%;
   }
+}
+
+.input-group-addon:last-child {
+    display: none;
+}
+.transfer-items-num {
+    clear: both;
 }

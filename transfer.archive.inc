@@ -1,7 +1,7 @@
 <?php
 require_once(DRUPAL_ROOT . '/' . drupal_get_path('module', 'transfer_request') . '/includes/class.transfer_request.inc.php');
 drupal_add_js(drupal_get_path('module', 'transfer_request') . "/dist/js/transfer_request_form.min.js");
-drupal_add_css(drupal_get_path('module', 'transfer_request') . "/dist/css/min/transfer_request_approval.min.css");
+drupal_add_css(drupal_get_path('module', 'transfer_request') . "/dist/css/transfer_request_approval.css");
 
 /**
  * Show form once callback has fired.

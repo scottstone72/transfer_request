@@ -6189,7 +6189,7 @@ body.html.not-front.logged-in.no-sidebars.page-transfer-request.page-transfer-re
   }
 }
 .container #marble-top #textured #section-container-page #page-section .region-content p {
-  padding-bottom: 20px;
+  /*padding-bottom: 20px;*/
 }
 .container #marble-top #textured #section-container-page #page-section .region-content #date {
   text-align: right;
@@ -6227,11 +6227,13 @@ body.html.not-front.logged-in.no-sidebars.page-transfer-request.page-transfer-re
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
-.container #marble-top #textured #section-container-page #page-section .region-content .from-rig,
+.container #marble-top #textured #section-container-page #page-section .region-content .from-rig {
+  /*float: left !important;*/
+  /*margin-right: 30px;*/
+  /*margin-left: 30px;*/
+}
 .container #marble-top #textured #section-container-page #page-section .region-content .from-location {
-  float: right !important;
-  margin-right: 30px;
-  margin-left: 30px;
+    /*float: right !important;*/
 }
 .container #marble-top #textured #section-container-page #page-section .region-content #dest-rig,
 .container #marble-top #textured #section-container-page #page-section .region-content #dest-location,
@@ -6278,18 +6280,42 @@ body.html.not-front.logged-in.no-sidebars.page-transfer-request.page-transfer-re
   cursor: pointer;
 }
 .container #marble-top #textured #section-container-page #page-section .region-content .odd-row {
-  background-color: #e9e6e7;
   overflow: hidden;
   clear: both;
   padding-top: 5px;
   margin-bottom: 10px;
 }
 .container #marble-top #textured #section-container-page #page-section .region-content .even-row {
-  overflow: hidden;
+    background-color: #e9e6e7;
+    overflow: hidden;
   clear: both;
   padding-top: 5px;
 }
 .container #marble-top #textured #section-container-page #page-section .region-content .hr-contain .horizontal-rule {
   clear: left;
-  border: 1px solid #000000;
+  /*border: 1px solid #000000;*/
+}
+
+#print-table {
+    width: 100%;
+    font-size: 16px;
+}
+#print-table thead {
+    border-bottom: 2px solid #000000;
+}
+
+#print-content {
+    font-size: 16px;
+}
+
+#print-content p {
+    color: #505050;
+}
+
+#print-content > p > strong {
+    color: #000000;
+}
+
+#print-content #third-party > strong {
+    color: #fac91d;
 }

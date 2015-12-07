@@ -6324,21 +6324,21 @@ form .from-lsd {
   form .from-rig,
   form .from-lsd {
     float: left;
-    width: 25%;
+    width: 33.333333%;
   }
 }
 @media (min-width: 992px) {
   form .from-rig,
   form .from-lsd {
     float: left;
-    width: 25%;
+    width: 33.333333%;
   }
 }
 @media (min-width: 1200px) {
   form .from-rig,
   form .from-lsd {
     float: left;
-    width: 25%;
+    width: 33.333333%;
   }
 }
 form .unit-id,
@@ -6553,6 +6553,7 @@ form #third-party {
 }
 form #third-party #third-party-checkbox {
   margin-top: 8px;
+  margin-left: -20px;
 }
 form .submit-button {
   padding-bottom: 30px;
@@ -6602,4 +6603,11 @@ form .cancel-button {
     float: left;
     width: 100%;
   }
+}
+
+.input-group-addon:last-child {
+    display: none;
+}
+.transfer-items-num {
+    clear: both;
 }

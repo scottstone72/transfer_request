@@ -76,7 +76,7 @@ class TransferRequest {
     // Use item number to help us organize
     // the object sent for each item number.
     foreach($results as $value) {
-      $rig_local[$item_num] = $value;
+      $rig_local[] = $value;
     }
 
     return $rig_local;

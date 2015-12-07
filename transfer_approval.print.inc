@@ -1,6 +1,6 @@
 <?php
 
-drupal_add_css(drupal_get_path('module', 'transfer_request') . "/dist/css/min/transfer_request_print.min.css");
+drupal_add_css(drupal_get_path('module', 'transfer_request') . "/dist/css/transfer_request_print.css");
 drupal_add_js(drupal_get_path('module', 'transfer_request') . "/dist/js/transfer_request_form.min.js");
 
 /**
@@ -55,6 +55,8 @@ function transfer_request_approval_print() {
     ),
   );
 
+    $output[] = array('#markup' => '<div id="print-content">');
+
   $output[] = array(
     'heading' => array(
       '#type' => 'markup',
@@ -107,7 +109,7 @@ function transfer_request_approval_print() {
     ),
     'admin_approver' => array(
       '#type' => 'markup',
-      '#markup' => t('<p id="admin-approver"><strong>Approved by:<br/></strong>@admin_approver</p>',
+      '#markup' => t('<p id="admin-approver"><strong>Approved by: </strong>@admin_approver</p>',
         array('@admin_approver' => $admin_approver)),
     ),
     'admin_notes' => array(
@@ -123,6 +125,9 @@ function transfer_request_approval_print() {
     '#markup' => '<div class="hr-contain"><hr class="horizontal-rule"/></div>',
   );
 
+    $output[] = array('#markup' => '<table id="print-table">');
+    $output[] = array('#markup' => '<thead><tr><th>Unit Code</th><th>From Rig</th><th>From Location</th></tr></thead><tbody>');
+
   // Cycle through array and add Rig, Location and Unit Code fields
   foreach ($transfer_items as $key => $value) {
 
@@ -132,34 +137,36 @@ function transfer_request_approval_print() {
     // Set rows so we can css the every other div.
 //    $key = $key + 1;
     if ($key % 2) {
-      $output[] = array('#markup' => '<div class="even-row">');
+      $output[] = array('#markup' => '<tr class="even-row">');
     }
     else {
-      $output[] = array('#markup' => '<div class="odd-row">');
+      $output[] = array('#markup' => '<tr class="odd-row">');
     }
     $output[] = array(
       "unit_code" => array(
         '#type' => 'markup',
-        '#markup' => t('<p class="unit-id"><strong>@number. Unit Code:</strong>&nbsp&nbsp @unit</p>',
+        '#markup' => t('<td class="unit-id"><strong>@number. @unit</td>',
           array('@unit' => $unit, '@number' => $key + 1)),
       ),
     );
     $output[] = array(
       "from_rig" => array(
         '#type' => 'markup',
-        '#markup' => t('<p class="from-rig"><strong><em>From Rig #:</em></strong>&nbsp&nbsp @from_rig</p>',
+        '#markup' => t('<td class="from-rig"> @from_rig</td>',
           array('@from_rig' => $from_rig)),
       ),
     );
     $output[] = array(
       "from_loc" => array(
         '#type' => 'markup',
-        '#markup' => t('<p class="from-location"><strong><em>From Location:</em></strong>&nbsp&nbsp @from_loc</p>',
+        '#markup' => t('<td class="from-location"> @from_loc</td>',
           array('@from_loc' => $from_loc)),
       ),
     );
-    $output[] = array('#markup' => '</div>');
+    $output[] = array('#markup' => '</tr>');
   }
+    // Close the table
+    $output[] = array('#markup' => '</tbody></table>');
 
   // Horizontal rule for easier data seperation
   $output[] = array(
@@ -213,6 +220,8 @@ function transfer_request_approval_print() {
     '#type' => 'markup',
     '#markup' => '<li id="print-link"><div id="print-this-page">Print Page</div></li></ul></div>',
   );
+
+    $output[] = array('#markup' => '</div>');// End print-content
 
   // Clear the $session to keep the bugs out
 //    unset($_SESSION['form_data']);

@@ -13,6 +13,7 @@ files[] = transfer.archive.inc
 files[] = transfer_archive.print.inc
 files[] = transfer_request.install
 files[] = includes/class.transfer_request.inc.php
+files[] = transfer_request.test
 
 dependencies[] = pr_operation_settings
 

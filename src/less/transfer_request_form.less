@@ -1,0 +1,136 @@
+@import 'bootstrap.less';
+@import 'variables.less';
+
+/* This bit of css is for disabling the ajax throbber */
+.ajax-progress, .ajax-progress-throbber {
+  display: none;
+}
+
+span.form-required, span.asterick {
+  color: #c7254e !important;
+}
+
+
+.chosen-container {
+  width: 100% !important;
+}
+
+#edit-contact-info {
+
+  #transfer-num,
+  #date-submitted,
+  #submitted-by {
+    .make-sm-column(4);
+    .make-md-column(4);
+    .make-lg-column(4);
+  }
+
+}
+
+.unit-id-select {
+  .make-sm-column(3);
+  .make-md-column(3);
+  .make-lg-column(3);
+
+  .group-result {
+    background-color: #ff8100;
+    color: #3a2a1d;
+  }
+}
+
+.transfer-items-num {
+  .make-sm-column(1);
+  .make-md-column(1);
+  .make-lg-column(1);
+}
+
+.from-field {
+  .make-sm-column(4);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+.from-lsd {
+  .make-sm-column(4);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+#third-party #third-party-checkbox {
+  margin-left: -20px;
+}
+
+.input-group-addon:last-child {
+  display: none;
+}
+
+.transfer-items-num {
+  clear: both;
+}
+
+.remove {
+  //margin-top: 32px;
+  .make-sm-column(2);
+  .make-md-column(2);
+  .make-lg-column(2);
+}
+
+.add {
+  .make-sm-column(1);
+  .make-md-column(1);
+  .make-lg-column(1);
+  margin-bottom: 30px;
+}
+
+#dest-location {
+  clear: both;
+}
+
+#to-field,
+#to-lsd,
+#operator {
+  .make-sm-column(4);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+#trans-company,
+#drivers-name,
+#receiver {
+  .make-sm-column(4);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+#phone-num,
+#receiver-email {
+  .make-sm-column(4);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+#ship-directions,
+#shipping-notes {
+  .make-sm-column(6);
+  .make-md-column(6);
+  .make-lg-column(6);
+}
+
+#third-party {
+  .make-sm-column(12);
+  .make-md-column(12);
+  .make-lg-column(12);
+  margin-bottom: 30px;
+
+  #third-party-checkbox {
+    margin-top: 8px;
+    margin-left: -20px;
+  }
+}
+
+#submit-button {
+  margin-bottom: 30px;
+  .make-sm-column(12);
+  .make-md-column(12);
+  .make-lg-column(12);
+}

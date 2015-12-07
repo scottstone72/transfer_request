@@ -1,0 +1,32 @@
+<?php
+
+use DrupalWebTestCase;
+
+class TransferRequestTests extends DrupalWebTestCase {
+
+    public static function getInfo() {
+
+        return array(
+            /**
+             * Metadata about our test case
+             */
+          'name' => 'Transfer Request Case',
+          'description' => 'Testing the transfer request form',
+          'group' => 'Transfer group',
+        );
+    }
+
+
+//    public function setUp() {
+//
+//        parent::setUp();
+//        // Code needed for setting up test
+//
+//    }
+
+//    public function testTransferRequestForm() {
+//
+//    }
+
+
+}
